@@ -1,0 +1,42 @@
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript">
+        var socket = new WebSocket("ws://localhost:8080/hello");
+
+        socket.onopen = function() {
+            alert("Connection success.");
+        };
+
+        socket.onclose = function(event) {
+            if (event.wasClean) {
+                alert('Connection closed');
+            } else {
+                alert('Connection dropped');
+            }
+            alert('Code: ' + event.code + ' fault: ' + event.reason);
+        };
+        socket.onmessage = function(event) {
+            var logarea = document.getElementById("log");
+            logarea.value = event.data+"n"+logarea.value;
+        };
+        socket.onerror = function(error) {
+            alert("Error " + error.message);
+        };
+
+        function send() {
+            var s = document.getElementById("in").value;
+            socket.send(s);
+        }
+
+    </script>
+</head>
+<body>
+<input type="text" id="in" /><input type="button" onclick="send()" value="send" />
+<br/>
+    <textarea id="log" rows="8" cols="20">
+</textarea>
+
+
+</body>
+</html>
